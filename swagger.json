@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "http://ec2-52-15-70-69.us-east-2.compute.amazonaws.com:3000/"
     }
   ],
   "paths": {
@@ -182,7 +182,7 @@
             "$ref": "#/components/parameters/startDate"
           },
           {
-            "$ref": "#/components/parameters/completetDate"
+            "$ref": "#/components/parameters/completeDate"
           }
         ],
         "security": [
@@ -346,17 +346,17 @@
       },
       "startDate": {
         "in": "query",
-        "name": "start date",
+        "name": "startDate",
         "required": false,
         "schema": {
           "type": "string",
-          "example": "2017"
+          "example": "2016"
         },
         "description": "trip start date, includes trips with start date greater than or equal to this date"
       },
-      "completetDate": {
+      "completeDate": {
         "in": "query",
-        "name": "completetDate",
+        "name": "completeDate",
         "required": false,
         "schema": {
           "type": "string",

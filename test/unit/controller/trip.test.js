@@ -27,7 +27,7 @@ describe('Trip Controller', () => {
         },
       });
 
-      expect(foundTrips).to.be.an('array');
+      expect(foundTrips).to.be.an('object');
     });
   });
 

@@ -74,7 +74,14 @@ exports.minMaxDistanceTravelled = async ({
       },
     },
   ]);
-  return foundTrips;
+
+  if (!foundTrips.length)
+    return {}
+
+  return {
+    minDistanceTravel: foundTrips[0].minDistanceTravel,
+    maxDistanceTravel: foundTrips[0].maxDistanceTravel
+  };
 };
 
 exports.groupByVehicleModelAtPoint = async ({

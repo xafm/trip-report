@@ -252,7 +252,7 @@ describe('Trips', () => {
           res.body.should.have.property('success');
           res.body.success.should.be.eql(true);
           res.body.should.have.property('data');
-          res.body.data.should.be.an('array');
+          res.body.data.should.be.an('object');
           done();
         });
     });

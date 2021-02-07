@@ -23,7 +23,7 @@ describe('Trip Service', () => {
         radius: 500,
       });
 
-      expect(foundTrips).to.be.an('array');
+      expect(foundTrips).to.be.an('object');
     });
   });
 

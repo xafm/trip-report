@@ -42,7 +42,7 @@ function checkLongitude() {
     .bail()
 
     .isFloat({min: -180, max: 80})
-    .withMessage('Longitude must be between -180 and 80')
+    .withMessage('Longitude must be between -180 and 180')
     .bail();
 }
 
