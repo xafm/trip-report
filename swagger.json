@@ -1,0 +1,474 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Trip Report",
+    "description": "<img src=\"https://bisene.bitaksi.com/img/logo.png\" ></br>",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Source Code",
+      "url": "https://github.com/xafm/trip-report"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Logs in the user",
+        "operationId": "login-user",
+        "tags": [
+          "Login"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "examples": {
+                "Successful": {
+                  "value": {
+                    "username": "admin",
+                    "password": 1234
+                  }
+                },
+                "Wrong Credentials": {
+                  "value": {
+                    "username": "admin",
+                    "password": "asdf"
+                  }
+                },
+                "Missing Parameter": {
+                  "value": {
+                    "username": "admin"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Log in with username and password"
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "SuccessfulResponse",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": true,
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "default": "",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjEyNjcyOTQxfQ.CuINHvHKYIyLMPxpEV"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "UnauthorizedResponse",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": false,
+                      "example": false
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "default": "Incorrect username or password",
+                            "example": "Incorrect username or password"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Missing Parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "UnauthorizedResponse",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "default": false,
+                      "example": false
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "string",
+                            "default": "Username can not be empty!",
+                            "example": "Username can not be empty!"
+                          },
+                          "param": {
+                            "type": "string",
+                            "default": "username",
+                            "example": "username"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trips/startedAtPoint": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Returns the trips which was started at the specified coordinates",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/longitude"
+          },
+          {
+            "$ref": "#/components/parameters/latitude"
+          },
+          {
+            "$ref": "#/components/parameters/radius"
+          },
+          {
+            "$ref": "#/components/parameters/startDate"
+          },
+          {
+            "$ref": "#/components/parameters/completetDate"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponseWithoutData"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Wrong parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trips/minMaxDistanceTravelled": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Returns the trips with min and max travel distance that started at the specified coordinates",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/longitude"
+          },
+          {
+            "$ref": "#/components/parameters/latitude"
+          },
+          {
+            "$ref": "#/components/parameters/radius"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/minMaxResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Wrong parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trips/groupByVehicleModelAtPoint": {
+      "get": {
+        "tags": [
+          "Trips"
+        ],
+        "summary": "Returns the number of trips grouped by vehicle model years of travels which started at the specified coordinates",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/longitude"
+          },
+          {
+            "$ref": "#/components/parameters/latitude"
+          },
+          {
+            "$ref": "#/components/parameters/radius"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessfulResponseWithoutData"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Wrong parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "longitude": {
+        "in": "query",
+        "name": "longitude",
+        "required": true,
+        "schema": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "example": -97.70929823
+        },
+        "description": "starting point longitude"
+      },
+      "latitude": {
+        "in": "query",
+        "name": "latitude",
+        "required": true,
+        "schema": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "example": 31.04685111
+        },
+        "description": "starting point latitude"
+      },
+      "radius": {
+        "in": "query",
+        "name": "radius",
+        "required": true,
+        "schema": {
+          "type": "number",
+          "minimum": 0,
+          "example": 500
+        },
+        "description": "starting point search radius"
+      },
+      "startDate": {
+        "in": "query",
+        "name": "start date",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "2017"
+        },
+        "description": "trip start date, includes trips with start date greater than or equal to this date"
+      },
+      "completetDate": {
+        "in": "query",
+        "name": "completetDate",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "example": "2020-12-31"
+        },
+        "description": "trip complete date, includes trips with complete date lower than or equal to this date"
+      }
+    },
+    "schemas": {
+      "SuccessfulResponseWithoutData": {
+        "type": "object",
+        "title": "Successful Response",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": true,
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "returnCode"
+        ]
+      },
+      "minMaxResponse": {
+        "type": "object",
+        "title": "minMaxDistanceTravelled Response",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": true,
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "minDistanceTravel": {
+                "type": "object"
+              },
+              "maxDistanceTravel": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "required": [
+          "returnCode"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "title": "Error Response",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": false,
+            "example": false
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error in a query parameter"
+                },
+                "param": {
+                  "type": "string",
+                  "example": "longitude"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TokenResponse": {
+        "title": "Token Response",
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "default": true,
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "default": "",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjEyNjcyOTQxfQ.CuINHvHKYIyLMPxpEV"
+              }
+            }
+          }
+        },
+        "required": [
+          "returnCode"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
