@@ -92,21 +92,21 @@ function checkRadius() {
 
 function checkStartDate() {
   return check('startDate')
-    .custom(value => {
-      if (value === undefined) return true;
-
-      return isDateValid(value);
+    .custom((value, {req}) => {
+      if (req.query.startDate === undefined) return true;
+      const valid = isDateValid(req.query.startDate);
+      return valid
     })
     .withMessage('startDate must be a valid date')
     .bail();
-}
-
-function checkCompleteDate() {
-  return check('completeDate')
-    .custom(value => {
-      if (value === undefined) return true;
-
-      return isDateValid(value);
+  }
+  
+  function checkCompleteDate() {
+    return check('completeDate')
+    .custom((value, {req})=> {
+      if (req.query.completeDate === undefined) return true;
+      const isValid = isDateValid(req.query.completeDate);
+      return isValid
     })
     .withMessage('completeDate must be a valid date')
     .bail();

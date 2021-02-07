@@ -1,17 +1,16 @@
 # Trip Report
 
-Açıklama
+A report service for trips
 
 # Installation
 
 - Clone repository or download it manually
   ```bash
-  git clone <>
+  git clone https://github.com/xafm/trip-report
   ```
 - Create <strong>.env</strong> file in the root project directory
 - Set required environment variables in .env file. Required envrionment variables are shown below with examples
   ```bash
-  PORT=3000
   JWT_SECRET="TOPSECRET"
   DB_CONNECTION_STRING=mongodb+srv://...
   ```
